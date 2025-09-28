@@ -1,23 +1,24 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import { stories } from "./storiesData";
+import StoryBar from "./StoryBar";
+import StoryViewer from "./StoryViewer";
+import "./App.css";
 
 function App() {
+  const [activeStoryIndex, setActiveStoryIndex] = useState(null);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="app">
+      <h2>Stories</h2>
+      <StoryBar stories={stories} onSelect={setActiveStoryIndex} />
+      {activeStoryIndex !== null && (
+        <StoryViewer
+          story={stories[activeStoryIndex]}
+          onNext={() => setActiveStoryIndex((i) => (i + 1) % stories.length)}
+          onPrev={() => setActiveStoryIndex((i) => (i - 1 + stories.length) % stories.length)}
+          onClose={() => setActiveStoryIndex(null)}
+        />
+      )}
     </div>
   );
 }
